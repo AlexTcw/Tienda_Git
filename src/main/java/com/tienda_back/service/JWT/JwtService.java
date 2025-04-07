@@ -1,4 +1,4 @@
-package com.tienda_back.service.jwt;
+package com.tienda_back.service.JWT;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

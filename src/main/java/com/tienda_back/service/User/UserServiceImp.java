@@ -1,13 +1,13 @@
-package com.tienda_back.service.user;
+package com.tienda_back.service.User;
 
 import com.tienda_back.model.dto.consume.ConsumeJsonLogin;
 import com.tienda_back.model.dto.consume.ConsumeJsonString;
 import com.tienda_back.model.dto.response.ResponseJsonLogin;
 import com.tienda_back.model.dto.response.ResponseJsonString;
-import com.tienda_back.model.entity.User;
+import com.tienda_back.model.entity.Users.User;
 import com.tienda_back.model.exception.ResourceNotFoundException;
-import com.tienda_back.repository.UserRepository;
-import com.tienda_back.service.jwt.JwtService;
+import com.tienda_back.repository.Users.UserRepository;
+import com.tienda_back.service.JWT.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

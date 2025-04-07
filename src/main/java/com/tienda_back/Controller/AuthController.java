@@ -4,7 +4,7 @@ import com.tienda_back.model.dto.consume.ConsumeJsonLogin;
 import com.tienda_back.model.dto.consume.ConsumeJsonString;
 import com.tienda_back.model.dto.response.ResponseJsonLogin;
 import com.tienda_back.model.dto.response.ResponseJsonString;
-import com.tienda_back.service.user.UserService;
+import com.tienda_back.service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

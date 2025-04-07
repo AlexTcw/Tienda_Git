@@ -1,4 +1,4 @@
-package com.tienda_back.service.user;
+package com.tienda_back.service.User;
 
 
 import com.tienda_back.model.dto.consume.ConsumeJsonLogin;

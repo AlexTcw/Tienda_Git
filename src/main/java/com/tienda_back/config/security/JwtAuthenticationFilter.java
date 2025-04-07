@@ -1,6 +1,6 @@
-package com.tienda_back.security;
+package com.tienda_back.config.security;
 
-import com.tienda_back.service.jwt.JwtService;
+import com.tienda_back.service.JWT.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

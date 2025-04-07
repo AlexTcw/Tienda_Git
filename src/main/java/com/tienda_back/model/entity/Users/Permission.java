@@ -1,5 +1,6 @@
-package com.tienda_back.model.entity;
+package com.tienda_back.model.entity.Users;
 
+import com.tienda_back.model.enums.PermissionEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class Permission implements Serializable {
     @Column(name = "permission_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long permissionId;
+    @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false, unique = true, updatable = false)
-    private String name;
+    private PermissionEnum name;
 }

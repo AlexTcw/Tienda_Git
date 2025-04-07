@@ -1,6 +1,7 @@
-package com.tienda_back.model.entity;
+package com.tienda_back.model.entity.Users;
 
 
+import com.tienda_back.model.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +26,9 @@ public class Role implements Serializable {
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name", nullable = false, unique = true, updatable = false)
+    private RoleEnum name;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "rol_permission", joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))

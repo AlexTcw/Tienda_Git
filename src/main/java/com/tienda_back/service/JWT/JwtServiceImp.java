@@ -1,4 +1,4 @@
-package com.tienda_back.service.jwt;
+package com.tienda_back.service.JWT;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

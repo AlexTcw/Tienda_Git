@@ -1,4 +1,4 @@
-package com.tienda_back.security;
+package com.tienda_back.config.security;
 
 import com.tienda_back.model.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/posts/**").hasRole(RoleEnum.ADMIN.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->

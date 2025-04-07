@@ -1,4 +1,4 @@
-package com.tienda_back.model.entity;
+package com.tienda_back.model.entity.Users;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
