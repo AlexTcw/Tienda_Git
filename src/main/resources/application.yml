@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: SpringGateway-MVC-demo
+  datasource:
+    url: jdbc:postgresql://172.27.17.149:5432/Tienda_db
+    username: Tienda_admin
+    password: C0ntr4se*a
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 30000
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        ddl-auto: create # Cambiar a 'none' en producci�n y usar migraciones
+    show-sql: true # Cambiar a 'false' en producci�n
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always # Cambiar a 'embedded' o usar migraciones en producci�n
+server:
+  port: 9100
+jwt:
+  secret: OWlRMWhGajJ0cXUvMUJ4WGtnbDlackUyT1p5UmxRSXZSTXFHdHFOdURsdz0=
+logging:
+  pattern:
+    dateformat: HH:mm
+
+springdoc:
+  swagger-ui:
+    path: /docs

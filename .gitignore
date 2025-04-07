@@ -1,0 +1,63 @@
+# === General Java/Maven ===
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+.mvn/timing.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+*.log
+
+# === IntelliJ IDEA ===
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# === Eclipse / Spring Tool Suite (STS) ===
+.classpath
+.project
+.settings/
+.springBeans
+.apt_generated/
+.factorypath
+.sts4-cache/
+
+# === NetBeans ===
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# === Visual Studio Code ===
+.vscode/
+
+# === OS-specific files ===
+.DS_Store
+Thumbs.db
+
+# === Build Folders ===
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# === Test Output ===
+*.coverage
+*.ec
+*.exec
+jacoco.exec
+*.ser
+
+# === Environment files ===
+.env
+.env.*
+*.local
+
+# === Miscellaneous ===
+HELP.md
