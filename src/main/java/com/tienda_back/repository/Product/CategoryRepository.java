@@ -2,7 +2,16 @@ package com.tienda_back.repository.Product;
 
 import com.tienda_back.model.entity.Products.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Set;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Object findCategoryByCategoryId(Long categoryId);
+
+    @Query(value = """
+            select c.*
+            from category c
+            """, nativeQuery = true)
+    List<Category> findAllCategories();
 }

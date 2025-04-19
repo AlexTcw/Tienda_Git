@@ -1,19 +1,24 @@
 package com.tienda_back.service.Products;
 
+import com.tienda_back.model.dto.generic.LongStringDto;
+import com.tienda_back.model.dto.response.ResponseJsonGeneric;
 import com.tienda_back.model.dto.response.ResponseJsonProduct;
 import com.tienda_back.model.dto.response.ResponseJsonProducts;
+import com.tienda_back.model.dto.response.ResponseJsonSet;
 import com.tienda_back.model.entity.Products.Category;
-import com.tienda_back.model.entity.Products.Inventory;
-import com.tienda_back.model.entity.Products.Product;
+import com.tienda_back.model.exception.ResourceNotFoundException;
 import com.tienda_back.repository.Product.CategoryProductRepository;
 import com.tienda_back.repository.Product.CategoryRepository;
 import com.tienda_back.repository.Product.InventoryRepository;
 import com.tienda_back.repository.Product.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,51 +31,103 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ResponseJsonProducts findAllProducts() {
-        // Verifica si la lista de productos está vacía
-        var products = productRepository.findAll();
-        if (products.isEmpty()) {
-            throw new IllegalArgumentException("No products found");
+        List<String[]> products = productRepository.findAllProducts();
+
+        return getResponseJsonProducts(products);
+    }
+
+    @Override
+    public ResponseJsonProduct findProductById(Long id) {
+        List<String[]> productList = productRepository.findProductById(id);
+
+        if (productList.isEmpty()) {
+            throw new ResourceNotFoundException("Product with id:  "+id+" not found");
         }
 
-        // Creamos una lista de productos de respuesta
-        List<ResponseJsonProduct> responseProducts = new ArrayList<>();
+        String[] product = productList.getFirst();
 
-        // Iteramos sobre los productos encontrados
-        for (Product product : products) {
-            // Buscamos el inventario asociado al producto
-            Inventory inventory = (Inventory) inventoryRepository.findInventoryByProduct(product);
+        return new ResponseJsonProduct(
+                Integer.parseInt(product[0]),    // product_id
+                product[1],                      // product_name
+                product[2],                      // product_sku
+                product[3],                      // product_description
+                Double.parseDouble(product[4]),  // product_price
+                product[5],                      // category_name
+                product[6],                      // product_brand
+                Integer.parseInt(product[7])     // inventory_stock
+        );
+    }
 
-            // Buscamos las categorías asociadas al producto
-            var cps = categoryProductRepository.findCategoryProductByProduct(product);
+    @Override
+    public ResponseJsonSet findAllCategories() {
+        List<Category> categories = categoryRepository.findAllCategories();
+        Set<LongStringDto> result = categories.stream()
+                .map(c -> new LongStringDto(c.getCategoryId(), c.getName()))
+                .collect(Collectors.toSet());
+        return new ResponseJsonSet(Collections.singleton(result));
+    }
 
-            // Inicializamos la categoría como nula, ya que un producto podría tener varias
-            Category category = null;
+    @Override
+    public ResponseJsonProducts findProductsByCategoryId(Long categoryId){
+        List<String[]> products = productRepository.findProductsByCategoryId(categoryId);
+        if (products.isEmpty()) {throw new ResourceNotFoundException("Product with id:  "+categoryId+" not found");}
+        return getResponseJsonProducts(products);
+    }
 
-            // Solo tomamos la primera categoría encontrada (ajustar según tu lógica de negocio)
-            if (!cps.isEmpty()) {
-                category = (Category) categoryRepository.findCategoryByCategoryId(cps.getFirst().getCategory().getCategoryId());
-            }
+    @Override
+    public ResponseJsonProducts findProductsBySku(String sku){
+        List<String[]> products = productRepository.findProductsByProductSku(sku);
+        if (products.isEmpty()) {throw new ResourceNotFoundException("Product with sku:  "+sku+" not found");}
+        return getResponseJsonProducts(products);
+    }
 
-            // Si no encontramos inventario o categoría, podemos lanzar una excepción o manejarlo según se desee
-            if (inventory == null || category == null) {
-                throw new IllegalStateException("Inventory or category missing for product " + product.getProductId());
-            }
+    @Override
+    public ResponseJsonSet findAllBrands() {
+        return new ResponseJsonSet(new HashSet<>(productRepository.findAllProductBrand()));
+    }
 
-            // Construimos el objeto de respuesta para cada producto
-            responseProducts.add(new ResponseJsonProduct(
-                    product.getProductId(),
-                    product.getName(),
-                    product.getSku(),
-                    product.getDescription(),
-                    product.getPrice(),
-                    category.getName(),
-                    product.getBrand(),
-                    inventory.getStock()
-            ));
-        }
+    @Override
+    public ResponseJsonProducts findProductsByBrandName(String brandName) {
+        List<String[]> products = productRepository.findProductsByBrandName(brandName);
+        if (products.isEmpty()) {throw new ResourceNotFoundException("Product with brand:  "+brandName+" not found");}
+        return getResponseJsonProducts(products);
+    }
 
-        // Retornamos la lista de productos en la respuesta JSON
-        return new ResponseJsonProducts(responseProducts);
+    @Override
+    public ResponseJsonProducts findProductsOutOfStock() {
+        List<String[]> products = productRepository.findProductsOutOfStock();
+        if (products.isEmpty()) {throw new ResourceNotFoundException("No products out of stock");}
+        return getResponseJsonProducts(products);
+    }
+
+    @Override
+    public ResponseJsonGeneric findProductsByKeyword(String keyword, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<String[]> productsByKeyword = productRepository.findProductsByKeyWord(keyword, pageable);
+        if (productsByKeyword.isEmpty()) {throw new ResourceNotFoundException("No products found with keyword:  "+keyword);}
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("products", productsByKeyword.getContent());
+        data.put("page", page);
+        data.put("size", size);
+        data.put("total", productsByKeyword.getTotalElements());
+        return new ResponseJsonGeneric(data);
+    }
+
+
+    private ResponseJsonProducts getResponseJsonProducts(List<String[]> products) {
+        List<ResponseJsonProduct> responseJsonProducts = products.stream()
+                .map(product -> new ResponseJsonProduct(
+                        Integer.parseInt(product[0]),//product_id
+                        product[1],//product_name
+                        product[2],//product_sku
+                        product[3],//product_description
+                        Double.parseDouble(product[4]),//product_price
+                        product[5],//category_name
+                        product[6],//product_brand
+                        Integer.parseInt(product[7])//inventory_stock
+                ))
+                .collect(Collectors.toList());
+        return new ResponseJsonProducts(responseJsonProducts);
     }
 
 }
