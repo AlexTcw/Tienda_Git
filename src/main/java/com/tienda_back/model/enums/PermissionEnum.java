@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PermissionEnum {
-    CREATE,REED,MODIFY,DELETE
+    CREATE, REED, MODIFY, DELETE
 }

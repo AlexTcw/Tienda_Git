@@ -69,24 +69,39 @@ ALTER TABLE user_role
 ALTER TABLE user_role
     ADD CONSTRAINT fk_user_role_on_user FOREIGN KEY (user_id) REFERENCES "user" (user_id);
 
-INSERT INTO role values (1,'ADMIN');
-INSERT INTO role values (2,'GENERIC');
+INSERT INTO role
+values (1, 'ADMIN');
+INSERT INTO role
+values (2, 'GENERIC');
 
-INSERT INTO permission VALUES (1,'CREATE');
-INSERT INTO permission VALUES (2,'REED');
-INSERT INTO permission VALUES (3,'MODIFY');
-INSERT INTO permission VALUES (4,'DELETE');
+INSERT INTO permission
+VALUES (1, 'CREATE');
+INSERT INTO permission
+VALUES (2, 'REED');
+INSERT INTO permission
+VALUES (3, 'MODIFY');
+INSERT INTO permission
+VALUES (4, 'DELETE');
 
-INSERT INTO rol_permission VALUES(1,1);
-INSERT INTO rol_permission VALUES(2,1);
-INSERT INTO rol_permission VALUES(3,1);
-INSERT INTO rol_permission VALUES(4,1);
-INSERT INTO rol_permission VALUES(2,2);
+INSERT INTO rol_permission
+VALUES (1, 1);
+INSERT INTO rol_permission
+VALUES (2, 1);
+INSERT INTO rol_permission
+VALUES (3, 1);
+INSERT INTO rol_permission
+VALUES (4, 1);
+INSERT INTO rol_permission
+VALUES (2, 2);
 
-INSERT INTO "user" VALUES (0,'admin','generic','1111111111','NA','root@email.com','root','$2a$10$C8/rXUWAkHuzLtM8wBOnmeBWT31jaW9sxn0kiqbKjvqHlqdW1Xug.');
+INSERT INTO "user"
+VALUES (0, 'admin', 'generic', '1111111111', 'NA', 'root@email.com', 'root',
+        '$2a$10$C8/rXUWAkHuzLtM8wBOnmeBWT31jaW9sxn0kiqbKjvqHlqdW1Xug.');
 
-INSERT INTO user_role VALUES(1,0);
-INSERT INTO user_role VALUES(2,0);
+INSERT INTO user_role
+VALUES (1, 0);
+INSERT INTO user_role
+VALUES (2, 0);
 
 ALTER TABLE user_role
     DROP CONSTRAINT fk_user_role_on_role;

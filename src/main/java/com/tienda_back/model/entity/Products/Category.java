@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "category")
-public class Category  implements Serializable {
+public class Category implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public class Category  implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "category_id")
     private Long categoryId;
-    @Column(name = "name",nullable = false,unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CategoryProduct> categoryProducts = new ArrayList<>();

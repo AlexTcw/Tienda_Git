@@ -23,7 +23,7 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
     @Column(name = "name", nullable = false)
@@ -36,8 +36,8 @@ public class Product implements Serializable {
     private Double price;
     @Column(name = "brand", nullable = false)
     private String brand;
+    @Column(name = "stock")
+    private Integer stock;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CategoryProduct> categoryProducts = new ArrayList<>();
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Inventory> inventory = new ArrayList<>();
 }

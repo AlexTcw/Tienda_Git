@@ -1,9 +1,8 @@
 package com.tienda_back.service.Products;
 
-import com.tienda_back.model.dto.response.ResponseJsonGeneric;
-import com.tienda_back.model.dto.response.ResponseJsonProduct;
-import com.tienda_back.model.dto.response.ResponseJsonProducts;
-import com.tienda_back.model.dto.response.ResponseJsonSet;
+import com.tienda_back.model.dto.consume.ConsumeJsonLong;
+import com.tienda_back.model.dto.consume.ConsumeJsonProduct;
+import com.tienda_back.model.dto.response.*;
 
 public interface ProductService {
 
@@ -24,4 +23,10 @@ public interface ProductService {
     ResponseJsonProducts findProductsOutOfStock();
 
     ResponseJsonGeneric findProductsByKeyword(String keyword, int page, int size);
+
+    ResponseJsonProduct createProduct(ConsumeJsonProduct consumeJsonProduct);
+
+    ResponseJsonProduct updateProduct(ConsumeJsonProduct consumeJsonProduct);
+
+    ResponseJsonString deleteProductById(ConsumeJsonLong consume);
 }

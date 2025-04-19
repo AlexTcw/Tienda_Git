@@ -1,10 +1,10 @@
 package com.tienda_back.Controller;
 
+import com.tienda_back.model.dto.consume.ConsumeJsonLong;
+import com.tienda_back.model.dto.consume.ConsumeJsonProduct;
 import com.tienda_back.model.dto.response.*;
 import com.tienda_back.service.Products.ProductService;
-import com.tienda_back.service.User.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +32,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProductById(id));
     }
 
-    @GetMapping(value = "/category",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/category", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseJsonSet> findAllCategories() {
         return ResponseEntity.ok(productService.findAllCategories());
     }
 
-    @GetMapping(value = "/category/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseJsonProducts> findAllProductsByCategory(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findProductsByCategoryId(id));
     }
@@ -66,10 +66,31 @@ public class ProductController {
     public ResponseEntity<ResponseJsonGeneric> findProductsByKeyword(@RequestParam(required = false, defaultValue = "") String keyword,
                                                                      @RequestParam(required = false, defaultValue = "0") int page,
                                                                      @RequestParam(required = false, defaultValue = "10") int size) {
-        if(keyword.isEmpty()) {
+        if (keyword.isEmpty()) {
             keyword = null;
         }
         return ResponseEntity.ok(productService.findProductsByKeyword(keyword, page, size));
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseJsonProduct> addProduct(@RequestBody ConsumeJsonProduct consume) {
+        if (consume == null) {
+            throw new IllegalArgumentException("must be provide a valid json object");
+        }
+        return ResponseEntity.ok(productService.createProduct(consume));
+    }
+
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseJsonProduct> updateProduct(@RequestBody ConsumeJsonProduct consume) {
+        if (consume == null) {
+            throw new IllegalArgumentException("must be provide a valid json object");
+        }
+        return ResponseEntity.ok(productService.updateProduct(consume));
+    }
+
+    @DeleteMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseJsonString> deleteProduct(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.deleteProductById(new ConsumeJsonLong(id)));
     }
 
 }
