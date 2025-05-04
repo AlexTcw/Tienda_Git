@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = {"*"})
 @RequiredArgsConstructor
 @RequestMapping(value = {"/product"})
 public class ProductController {
@@ -62,7 +61,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProductsOutOfStock());
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search/page", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseJsonGeneric> findProductsByKeyword(@RequestParam(required = false, defaultValue = "") String keyword,
                                                                      @RequestParam(required = false, defaultValue = "0") int page,
                                                                      @RequestParam(required = false, defaultValue = "10") int size) {
@@ -70,6 +69,11 @@ public class ProductController {
             keyword = null;
         }
         return ResponseEntity.ok(productService.findProductsByKeyword(keyword, page, size));
+    }
+
+    @GetMapping(value = "/search",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseJsonProducts> findProductsByKeyword(@RequestParam(required = false, defaultValue = "") String keyword) {
+        return ResponseEntity.ok(productService.findProductsByKeyWord(keyword));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -88,7 +92,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.updateProduct(consume));
     }
 
-    @DeleteMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseJsonString> deleteProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productService.deleteProductById(new ConsumeJsonLong(id)));
     }

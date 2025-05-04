@@ -9,8 +9,23 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = """
             select u.*
-            from "user" as u
+            from "user" u
             where u.username = :username
             """, nativeQuery = true)
     User findUserByUsername(@Param("username") String username);
+
+
+    @Query(value = """
+            SELECT COUNT(*)
+            FROM "user" u\s
+            WHERE user_id = :user_Id""", nativeQuery = true)
+    int countUserByUserId(@Param("user_Id") Long userId);
+
+
+    @Query(value = """
+            select u.*
+            from "user" u
+            where u.user_id = :user_id
+            """, nativeQuery = true)
+    User findUserByUserId(@Param("user_id") Long userId);
 }

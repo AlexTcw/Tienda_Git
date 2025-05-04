@@ -1,5 +1,6 @@
 package com.tienda_back.model.entity.Users;
 
+import com.tienda_back.model.entity.cart.Cart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "\"user\"")
 public class User implements Serializable, UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -42,6 +44,8 @@ public class User implements Serializable, UserDetails {
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

@@ -23,7 +23,7 @@ spring:
     init:
       mode: always # Cambiar a 'embedded' o usar migraciones en producci�n
 server:
-  port: 9100
+  port: 8100
 jwt:
   secret: OWlRMWhGajJ0cXUvMUJ4WGtnbDlackUyT1p5UmxRSXZSTXFHdHFOdURsdz0=
 logging:

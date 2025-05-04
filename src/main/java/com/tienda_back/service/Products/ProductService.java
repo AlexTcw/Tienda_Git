@@ -24,6 +24,8 @@ public interface ProductService {
 
     ResponseJsonGeneric findProductsByKeyword(String keyword, int page, int size);
 
+    ResponseJsonProducts findProductsByKeyWord(String keyword);
+
     ResponseJsonProduct createProduct(ConsumeJsonProduct consumeJsonProduct);
 
     ResponseJsonProduct updateProduct(ConsumeJsonProduct consumeJsonProduct);

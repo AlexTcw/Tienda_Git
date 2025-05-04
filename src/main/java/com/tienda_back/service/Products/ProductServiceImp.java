@@ -127,7 +127,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ResponseJsonGeneric findProductsByKeyword(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<String[]> productsByKeyword = productRepository.findProductsByKeyWord(keyword, pageable);
+        Page<String[]> productsByKeyword = productRepository.findProductsByKeyWordPage(keyword, pageable);
         if (productsByKeyword.isEmpty()) {
             throw new ResourceNotFoundException("No products found with keyword:  " + keyword);
         }
@@ -137,6 +137,13 @@ public class ProductServiceImp implements ProductService {
         data.put("size", size);
         data.put("total", productsByKeyword.getTotalElements());
         return new ResponseJsonGeneric(data);
+    }
+
+    @Override
+    public ResponseJsonProducts findProductsByKeyWord(String keyword) {
+        List<String []> products = productRepository.findProductsByKeyWord(keyword);
+
+        return getResponseJsonProducts(products);
     }
 
     @Override
@@ -166,12 +173,12 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseJsonProduct updateProduct(ConsumeJsonProduct consumeJsonProduct){
-        if (consumeJsonProduct.productID() == 0){
+    public ResponseJsonProduct updateProduct(ConsumeJsonProduct consumeJsonProduct) {
+        if (consumeJsonProduct.productID() == 0) {
             throw new ResourceNotFoundException("You must provide a product id");
         }
 
-        if (!productRepository.existsProductByProductId(consumeJsonProduct.productID())){
+        if (!productRepository.existsProductByProductId(consumeJsonProduct.productID())) {
             throw new ResourceNotFoundException("Product with id: " + consumeJsonProduct.productID() + " not found");
         }
 
@@ -195,10 +202,16 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     @Transactional
-    public ResponseJsonString deleteProductById(ConsumeJsonLong consume){
-        if (consume == null) {throw new ResourceNotFoundException("You must provide a product id");}
-        if (consume.value() == null || consume.value() == 0){throw new ResourceNotFoundException("You must provide a product id");}
-        if (!productRepository.existsProductByProductId(consume.value())){throw new ResourceNotFoundException("Product with id: " + consume.value() + " not found");}
+    public ResponseJsonString deleteProductById(ConsumeJsonLong consume) {
+        if (consume == null) {
+            throw new ResourceNotFoundException("You must provide a product id");
+        }
+        if (consume.value() == null || consume.value() == 0) {
+            throw new ResourceNotFoundException("You must provide a product id");
+        }
+        if (!productRepository.existsProductByProductId(consume.value())) {
+            throw new ResourceNotFoundException("Product with id: " + consume.value() + " not found");
+        }
 
         Product product = productRepository.findProductByProductId(consume.value());
 
