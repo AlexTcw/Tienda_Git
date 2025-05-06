@@ -51,6 +51,7 @@ public class UserServiceImp implements UserService {
                 .orElseThrow(() -> new RuntimeException("Authentication failed"));
 
         return new ResponseJsonLogin(
+                user.getUserId(),
                 user.getUsername(),
                 jwtToken
         );

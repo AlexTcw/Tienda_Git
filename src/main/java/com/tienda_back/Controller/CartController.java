@@ -76,7 +76,7 @@ public class CartController {
         return ResponseEntity.ok(cartService.updateCart(consume));
     }
 
-    @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "search/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseJsonCarts> findCartByKeyWOrd(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) LocalDateTime startDate,

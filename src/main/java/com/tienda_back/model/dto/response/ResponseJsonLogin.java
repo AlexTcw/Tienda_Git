@@ -1,4 +1,4 @@
 package com.tienda_back.model.dto.response;
 
-public record ResponseJsonLogin(String username, String jwtToken) {
+public record ResponseJsonLogin(long userId,String username, String jwtToken) {
 }

@@ -131,6 +131,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     AND p.product_id = CAST(:key AS NUMERIC))
                 ))
             GROUP BY p.product_id, p."name", p.sku, p.description, p.price, p.brand, p.stock
+            ORDER BY p.stock ASC
             """, nativeQuery = true)
     List<String[]> findProductsByKeyWord(@Param("key") String keyword);
 
